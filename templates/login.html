@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="{{url_for('static',filename='lib/react.development.js')}}" crossorigin></script>
+    <script src="{{url_for('static',filename='lib/react-dom.development.js')}}" crossorigin></script>
+    <script src="{{url_for('static',filename='lib/babel.min.js')}}" crossorigin></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='login.css')}}">
+    <meta charset="UTF-8" />
+    <title>YLZS's Login Page</title>
+  </head>
+  <body>
+    <input id='csrf_token'type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input id="default_view" type="hidden" value="{{default_view}}"/>
+    <input id='err_msg' type='hidden' value="{{err_msg}}"/>
+    <input id='vcode_url' type='hidden' value="{{vcode}}"/>
+    <div id = 'app'>
+    </div>
+    <script type = "text/babel" src = "{{url_for('static',filename='login.js')}}"></script>
+  </body>
+</html>

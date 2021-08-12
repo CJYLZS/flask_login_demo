@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>YLZS</title>
+  </head>
+  <body>
+    <input id = 'err_msg' type = 'hidden' value = '{{err_msg}}'/>
+    <h1>Hello {{username}}!</h1>
+    <a href="/logout">退出登录</a><br>
+    <a href="/pwset">修改密码</a><br>
+    <a href="/deleteuser">注销账户</a>
+    
+    <script type = 'text/javascript'>
+    let err_msg = document.getElementById('err_msg').value;
+    if(err_msg.length != 0){
+      alert(err_msg);
+    }
+    </script>
+  </body>
+</html>
