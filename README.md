@@ -9,22 +9,22 @@
 ```json
 {
     "MYSQL_CONFIG":{
-        // mysql 的账户配置
+        /* mysql 的账户配置 */
         "host":"127.0.0.1",
         "port":3306,
         "user":"ylzs",
         "password":"123123",
-        "database":"flask_db_0" // 数据库名
+        "database":"flask_db_0" /* 数据库名 */
     },
     "EMAIL_CONFIG":{
-        // 找回邮件采用stmp发送
+        /* 找回邮件采用stmp发送 */
         "smtp_url":"smtp.qq.com",
         "smtp_port":465,
         "email_account":"3531555795@qq.com",
-        "email_passwd":"cviwjdvzzbxmcjih"// stmp的授权码
+        "email_passwd":"cviwjdvzzbxmcjih"/* stmp的授权码 */
     },
     "WEB_CONFIG":{
-        // 找回邮件的链接由这个配置生成 例如: http://127.0.0.1:5000/.....
+        /* 找回邮件的链接由这个配置生成 例如: http://127.0.0.1:5000/..... */
         "protocol":"http",
         "domain":"127.0.0.1",
         "port":5000
