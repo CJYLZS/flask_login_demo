@@ -3,6 +3,7 @@ from werkzeug.security import check_password_hash
 from captcha.image import ImageCaptcha
 import random
 import uuid
+import json
 import os
 
 from mysql import sql_util
@@ -10,17 +11,22 @@ from mysql import sql_util
 import smtplib
 from email.mime.text import MIMEText
 
+email_config = {}
+with open('config.json','r') as f:
+    email_config = json.load(f)["EMAIL_CONFIG"]
+
 def sendMail(body, email):
+    global email_config
     try:
         """发送邮件"""
         msg = MIMEText(body)
         msg["Subject"] = "密码重置"
         msg["From"] = "YLZS的登录网页"  # from
         msg["To"] = "你的qq邮箱"  # to
-
-        s = smtplib.SMTP_SSL("smtp.qq.com", 465)
-        s.login("3531555795@qq.com", "cviwjdvzzbxmcjih")  # 这里的第二个参数为qq邮箱授权码，不要填你的密码
-        s.sendmail("3531555795@qq.com", [email, ], msg.as_string())  # from，to，msg
+        
+        s = smtplib.SMTP_SSL(email_config["smtp_url"], email_config["smtp_port"])
+        s.login(email_config["email_account"], email_config["email_passwd"])  # 这里的第二个参数为邮箱授权码，不要填你的密码
+        s.sendmail(email_config["email_account"], [email, ], msg.as_string())  # from，to，msg
         s.quit()
     except Exception as e:
         print("邮件发送失败~~" + e.message)
@@ -49,6 +55,8 @@ class login_util:
         login_manager.login_view = login_view
         login_manager.user_loader(self.load_user)
         self._sql_util = sql_util()
+        with open('config.json', 'r') as f:
+            self._web_config = json.load(f)["WEB_CONFIG"]
 
     def load_user(self, user_id):
         result = self._sql_util.find_user_by_('id', user_id)
@@ -96,11 +104,15 @@ class login_util:
         return self._sql_util.add_user(username, passwd, email)
 
     def deleteuser(self):
+        # delete user by current_user's id
         return self._sql_util.delete_user(current_user.get_id())
 
     def send_reset_mail(self, username, passwd_hash, email):
-        mail_data = ("%s reset password link: http://127.0.0.1:5000/pwset?old_hash=%s") \
-            % (username,passwd_hash)
+        # 向用户发送重置密码的链接
+        # todo: 如果有域名这里要改一下
+        root = self._web_config["protocol"]+'://'+self._web_config["domain"]+':'+str(self._web_config["port"])
+        mail_data = ("%s reset password link: %s/pwset?old_hash=%s") \
+            % (username, root, passwd_hash)
         sendMail(mail_data, email)
 
 

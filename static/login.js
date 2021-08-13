@@ -127,7 +127,6 @@ class EntryPage extends Component {
             })
                 .then(res => res.json())
                 .then(res => {
-                    
                     if(res.result){
                         alert(res.msg);
                     }else{

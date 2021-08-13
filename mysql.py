@@ -2,18 +2,14 @@
 
 import re
 import pymysql
+import json
 from werkzeug.security import generate_password_hash
 
 
 class sql_util:
     def __init__(self):
-        self._sql_config = {
-            'host':'127.0.0.1',
-            'port':3306,
-            'user':'ylzs',
-            'password':'123123',
-            'database':'flask_db_0'
-        }
+        with open('config.json','r') as f:
+            self._sql_config = json.load(f)["MYSQL_CONFIG"]
         self.db = pymysql.connect(**self._sql_config)
         self.cursor = self.db.cursor()
     

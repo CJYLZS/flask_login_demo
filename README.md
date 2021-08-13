@@ -4,7 +4,37 @@
 
 后端配置
 
-mysql
+部署需要自己配置config.json
+
+```json
+{
+    "MYSQL_CONFIG":{
+        // mysql 的账户配置
+        "host":"127.0.0.1",
+        "port":3306,
+        "user":"ylzs",
+        "password":"123123",
+        "database":"flask_db_0" // 数据库名
+    },
+    "EMAIL_CONFIG":{
+        // 找回邮件采用stmp发送
+        "smtp_url":"smtp.qq.com",
+        "smtp_port":465,
+        "email_account":"3531555795@qq.com",
+        "email_passwd":"cviwjdvzzbxmcjih"// stmp的授权码
+    },
+    "WEB_CONFIG":{
+        // 找回邮件的链接由这个配置生成 例如: http://127.0.0.1:5000/.....
+        "protocol":"http",
+        "domain":"127.0.0.1",
+        "port":5000
+    }
+}
+```
+
+
+
+mysql数据表结构 数据表名: ==users==
 
 ```shell
 +----------+--------------+------+-----+---------+----------------+
@@ -20,7 +50,7 @@ mysql
 
 
 
-前端采用react组件渲染页面
+前端相关文件位于static和templates两个目录
 
 
 
@@ -29,6 +59,6 @@ mysql
 - 注册账户/注销账户
 - 登录/登出
 - 邮箱找回密码
-- 登录失败超过6次强制进行人机验证后才能登录
+- 登录失败超过5次强制进行人机验证后才能登录
 - 注册和找回密码均使用captcha防止暴力反复注册
 

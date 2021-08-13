@@ -1,0 +1,20 @@
+{
+    "MYSQL_CONFIG":{
+        "host":"127.0.0.1",
+        "port":3306,
+        "user":"ylzs",
+        "password":"123123",
+        "database":"flask_db_0"
+    },
+    "EMAIL_CONFIG":{
+        "smtp_url":"smtp.qq.com",
+        "smtp_port":465,
+        "email_account":"3531555795@qq.com",
+        "email_passwd":"cviwjdvzzbxmcjih"
+    },
+    "WEB_CONFIG":{
+        "protocol":"http",
+        "domain":"127.0.0.1",
+        "port":5000
+    }
+}

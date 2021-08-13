@@ -1,15 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-    :author: Grey Li (李辉)
-    :url: http://greyli.com
-    :copyright: © 2018 Grey Li
-    :license: MIT, see LICENSE for more details.
-"""
 
 import os
-from types import MethodDescriptorType, MethodType
 import json
-import traceback
 
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_wtf import CSRFProtect
@@ -19,11 +11,6 @@ from login import login_util
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'secret string')
-
-app.config['CAPTCHA_ENABLE'] = True
-app.config['CAPTCHA_LENGTH'] = 5
-app.config['CAPTCHA_WIDTH'] = 160
-app.config['CAPTCHA_HEIGHT'] = 60
 
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
@@ -43,7 +30,7 @@ def update_login_failed_session(session):
     if 'failed_login_times' in session.keys():
         session['failed_login_times'] += 1
     else:
-        session['failed_login_times'] = 0
+        session['failed_login_times'] = 1
 
 def reset_login_failed_session(session):
     if 'failed_login_times' in session.keys():
@@ -54,8 +41,12 @@ def reset_login_failed_session(session):
 def get_login_failed_times(session):
     return session.get('failed_login_times', 0)
 
-def load_captcha(session):
+def load_captcha(session, refresh = False):
     if 'vcode_filename' not in session.keys():
+        result, err_msg, filename = app_login_util.get_new_captcha(session)
+        if not result:
+            raise(err_msg)
+    elif refresh:
         result, err_msg, filename = app_login_util.get_new_captcha(session)
         if not result:
             raise(err_msg)
@@ -164,7 +155,7 @@ def pwset():
             return result_str(result, err_msg)
     else:
         # GET
-        load_captcha(session)
+        load_captcha(session, True) # refresh vcode!
         if app_login_util.get_current_user().is_authenticated:
             return render_template('login.html',default_view = 'PWSet', vcode = session.get('vcode_filename', ''))
         
